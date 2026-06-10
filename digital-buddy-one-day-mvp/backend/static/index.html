@@ -1,0 +1,1482 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Digital Buddy — KMG Onboarding</title>
+  <style>
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --surface-soft: #f8fafc;
+  --border: #e2e8f0;
+  --border-strong: #cbd5e1;
+  --text: #0f172a;
+  --dark: #1f2c4e;
+  --muted: #64748b;
+  --blue: #1f2c4e;
+  --blue-2: #14203a;
+  --blue-soft: #eef3ff;
+  --indigo: #30446f;
+  --green: #16a34a;
+  --green-soft: #ecfdf5;
+  --amber: #f59e0b;
+  --amber-soft: #fffbeb;
+  --orange: #f97316;
+  --orange-soft: #fff7ed;
+  --red: #ef4444;
+  --red-soft: #fef2f2;
+  --slate-soft: #f1f5f9;
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, .05);
+  --shadow: 0 12px 28px rgba(15, 23, 42, .08);
+  --shadow-lg: 0 24px 60px rgba(15, 23, 42, .16);
+  --radius: 18px;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+  background:
+    radial-gradient(circle at top right, rgba(31, 44, 78, .10), transparent 34%),
+    linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+button, input { font: inherit; }
+button {
+  border: 0;
+  border-radius: 12px;
+  padding: 11px 16px;
+  background: linear-gradient(135deg, var(--blue), var(--blue-2));
+  color: #fff;
+  cursor: pointer;
+  font-weight: 700;
+  box-shadow: 0 8px 18px rgba(31, 44, 78, .20);
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease, opacity .18s ease;
+}
+button:hover { transform: translateY(-1px); box-shadow: 0 12px 24px rgba(31, 44, 78, .26); }
+button:active { transform: scale(.98); }
+button.ghost {
+  background: #fff;
+  color: #334155;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+button.ghost:hover { background: var(--slate-soft); box-shadow: var(--shadow-sm); }
+button.secondary { background: #334155; box-shadow: 0 8px 18px rgba(51, 65, 85, .16); }
+button.success { background: var(--green); box-shadow: 0 8px 18px rgba(22, 163, 74, .18); }
+button.warn { background: var(--amber); box-shadow: 0 8px 18px rgba(245, 158, 11, .18); color: #fff; }
+button.danger { background: var(--red); box-shadow: 0 8px 18px rgba(239, 68, 68, .18); }
+button.small { padding: 8px 12px; border-radius: 10px; font-size: 13px; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideInDown { from { transform: translateY(-12px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes slideInRight { from { transform: translateX(26px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes progressGrow { from { width: 0; } }
+@keyframes pulseDot { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.18); opacity: .76; } }
+@keyframes robotFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+.loginPage {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 32px;
+  padding: 44px;
+  align-items: center;
+  background: linear-gradient(135deg, #f8fafc 0%, #eaf2ff 100%);
+}
+.loginHero {
+  min-height: 620px;
+  border-radius: 32px;
+  padding: 46px;
+  color: #fff;
+  background:
+    linear-gradient(135deg, rgba(8, 15, 30, .84) 0%, rgba(31, 44, 78, .72) 48%, rgba(7, 15, 29, .88) 100%),
+    url("/static/kmg-login-bg.png") center / cover no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+.loginHero::before, .loginHero::after {
+  content: "";
+  position: absolute;
+  border-radius: 999px;
+  background: rgba(255,255,255,.10);
+}
+.loginHero::before { width: 260px; height: 260px; right: -70px; top: -70px; }
+.loginHero::after { width: 180px; height: 180px; left: -60px; bottom: -60px; }
+.loginHero > * { position: relative; z-index: 1; }
+.loginHero h1 { margin: 0 0 18px; font-size: clamp(38px, 5vw, 64px); line-height: 1.02; letter-spacing: -.04em; }
+.loginHero p { margin: 0; color: #e5ebf6; max-width: 700px; font-size: 18px; line-height: 1.6; }
+.heroSteps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 36px; }
+.heroStep { background: rgba(255,255,255,.13); border: 1px solid rgba(255,255,255,.2); border-radius: 18px; padding: 18px; backdrop-filter: blur(12px); }
+.heroStep b { display: block; margin-bottom: 7px; font-size: 16px; }
+.heroStep span { color: #e5ebf6; font-size: 13px; line-height: 1.45; }
+.loginCard {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  padding: 34px;
+  box-shadow: var(--shadow);
+  max-width: 470px;
+  width: 100%;
+  justify-self: center;
+  animation: slideInRight .32s ease-out;
+}
+.loginCard h2 { margin: 0 0 8px; font-size: 34px; letter-spacing: -.03em; }
+.loginCard p { margin: 0 0 24px; color: var(--muted); line-height: 1.55; }
+.field { margin-bottom: 16px; }
+.field label { display: block; margin-bottom: 7px; font-weight: 800; font-size: 14px; color: #334155; }
+.field input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #f8fafc;
+  color: var(--text);
+  outline: none;
+  transition: box-shadow .18s ease, border-color .18s ease, background .18s ease;
+}
+.field input:focus { border-color: #8797b9; background: #fff; box-shadow: 0 0 0 4px rgba(31,44,78,.14); }
+.demoCreds { margin-top: 18px; padding: 16px; border-radius: 18px; border: 1px dashed #bdc8dc; background: var(--blue-soft); color: #475569; line-height: 1.55; }
+.error { min-height: 18px; margin-top: 10px; color: var(--red); font-size: 13px; }
+
+.appHeader {
+  height: 72px;
+  padding: 0 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  background: rgba(255,255,255,.86);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  box-shadow: var(--shadow-sm);
+}
+.brand { display: flex; align-items: center; gap: 12px; min-width: 270px; }
+.brandLogo { width: 42px; height: 42px; border-radius: 14px; background: var(--blue-soft); display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: var(--shadow-sm); }
+.brandLogo img { width: 100%; height: 100%; object-fit: cover; }
+.brandText b { display: block; font-size: 19px; color: var(--text); }
+.brandText span { display: block; font-size: 12px; color: var(--muted); margin-top: 2px; }
+.topMenu { display: none; }
+.menuLink { background: transparent; color: #475569; box-shadow: none; border: 0; padding: 10px 14px; }
+.menuLink:hover { background: var(--slate-soft); box-shadow: none; }
+.authActions { display: flex; align-items: center; gap: 10px; }
+.accountBadge { display:flex; align-items:center; gap:8px; padding:9px 12px; border-radius:999px; background:#f8fafc; border:1px solid var(--border); font-weight:800; color:#334155; }
+.accountBadge .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 4px rgba(22,163,74,.12); }
+
+.dashboard {
+  display: none;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 30px 26px 60px 120px;
+  animation: fadeIn .26s ease-out;
+}
+.dashboard.active { display: block; }
+.welcomeStrip {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 20px;
+  margin-bottom: 24px;
+  background:
+    radial-gradient(circle at right center, rgba(255,255,255,.22), transparent 24%),
+    linear-gradient(135deg, #1f2c4e 0%, #14203a 54%, #27395f 100%);
+  color: #fff;
+  border-radius: 28px;
+  padding: 28px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  position: relative;
+}
+.welcomeStrip::after { content:""; position:absolute; width:220px; height:220px; border-radius:50%; background:rgba(255,255,255,.08); right:-60px; top:-80px; }
+.pageTitle { position: relative; z-index:1; }
+.pageTitle h1 { margin: 0 0 8px; font-size: clamp(28px, 4vw, 46px); line-height: 1.05; letter-spacing: -.035em; }
+.pageTitle p { margin: 0; color: #e5ebf6; font-size: 16px; }
+.dayBadge {
+  align-self: flex-start;
+  position: relative;
+  z-index: 1;
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.18);
+  border: 1px solid rgba(255,255,255,.28);
+  font-weight: 900;
+  color: #fff;
+  white-space: nowrap;
+  backdrop-filter: blur(12px);
+}
+.gridTop { display: grid; grid-template-columns: .9fr 1.35fr; gap: 22px; margin-bottom: 24px; }
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.panel:hover { box-shadow: var(--shadow); }
+.panel h2 { margin: 0 0 18px; font-size: 19px; letter-spacing: -.01em; }
+.employeeCard { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+.employeeAvatar {
+  width: 64px; height: 64px; border-radius: 22px;
+  background: linear-gradient(135deg, #1f2c4e, #14203a);
+  color: #fff;
+  display:flex; align-items:center; justify-content:center;
+  font-size: 24px; font-weight: 900;
+  box-shadow: 0 10px 22px rgba(31,44,78,.22);
+}
+.infoRows { display: grid; gap: 10px; }
+.infoRow { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 12px 0; border-top: 1px solid var(--border); }
+.infoRow span { color: var(--muted); font-size: 14px; }
+.infoRow b { text-align: right; color: #334155; }
+.progressRingWrap { display: grid; grid-template-columns: auto 1fr; gap: 22px; align-items: center; }
+.progressRing {
+  --deg: 0deg;
+  width: 124px; height: 124px; border-radius: 50%;
+  background: conic-gradient(var(--blue) var(--deg), #e2e8f0 0deg);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.45), 0 10px 22px rgba(15,23,42,.08);
+}
+.progressRingInner { width: 88px; height: 88px; border-radius: 50%; background: #fff; display:flex; align-items:center; justify-content:center; font-size:24px; font-weight:900; color:var(--blue); box-shadow: inset 0 0 0 1px var(--border); }
+.miniProgress { margin-top: 16px; height: 12px; border-radius: 999px; background: #e2e8f0; overflow: hidden; }
+.miniProgress > div { height: 100%; border-radius: inherit; background: linear-gradient(90deg, #5c719b, var(--blue)); animation: progressGrow .8s ease-out; }
+.progressStats { display:grid; grid-template-columns: repeat(5, 1fr); gap:10px; margin-top:18px; }
+.statBox { border: 1px solid var(--border); background: #fff; border-radius: 16px; padding: 12px; text-align:center; }
+.statBox b { display:block; font-size: 26px; color: var(--blue); line-height: 1; }
+.statBox span { display:block; margin-top:6px; color:var(--muted); font-size:12px; }
+.statBox.warning b { color: var(--orange); }
+.statBox.danger b { color: var(--red); }
+
+.tasksPanel { margin-top: 24px; }
+.tasksHeader { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
+.progressText { color: var(--muted); font-weight: 700; }
+.tasks { display: grid; gap: 14px; }
+.taskCard {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-left: 5px solid var(--blue);
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease;
+  cursor: pointer;
+  animation: slideInDown .22s ease-out;
+}
+.taskCard:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+.taskTitle { font-size: 17px; font-weight: 900; margin-bottom: 8px; color: var(--text); }
+.taskMeta { display: flex; flex-wrap: wrap; gap: 9px 12px; align-items:center; color: var(--muted); font-size: 13px; }
+.taskActions { display:flex; align-items:center; gap: 9px; flex-wrap: wrap; justify-content:flex-end; }
+.visual-new { border-left-color: var(--blue); }
+.visual-in_progress { border-left-color: var(--amber); background: linear-gradient(90deg, rgba(255,251,235,.75), #fff 26%); }
+.visual-soon_due { border-left-color: var(--orange); background: linear-gradient(90deg, rgba(255,247,237,.9), #fff 32%); }
+.visual-overdue { border-left-color: var(--red); background: linear-gradient(90deg, rgba(254,242,242,.95), #fff 34%); }
+.visual-completed { border-left-color: var(--green); background: linear-gradient(90deg, rgba(236,253,245,.75), #fff 28%); }
+.visual-completed .taskTitle { color: #15803d; text-decoration: line-through; text-decoration-thickness: 2px; }
+.pill { display:inline-flex; align-items:center; gap:5px; padding:6px 10px; border-radius:999px; font-size:12px; font-weight:900; white-space:nowrap; }
+.status-new { background: var(--blue-soft); color: var(--blue); }
+.status-in_progress { background: var(--amber-soft); color: #92400e; }
+.status-completed { background: var(--green-soft); color: #15803d; }
+.due-soon_due { background: var(--orange-soft); color: #c2410c; }
+.due-overdue { background: var(--red-soft); color: #b91c1c; }
+.empty { padding: 26px; text-align: center; color: var(--muted); background: #fff; border: 1px dashed var(--border-strong); border-radius: 18px; }
+
+.buddyLauncher {
+  display: none;
+  position: fixed;
+  right: 26px;
+  bottom: 26px;
+  z-index: 55;
+  align-items: flex-end;
+  gap: 12px;
+}
+.buddyLauncher.active { display:flex; }
+.buddyIcon {
+  position: relative;
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  padding: 0;
+  background: #fff;
+  border: 3px solid #e5ebf6;
+  box-shadow: 0 16px 36px rgba(31,44,78,.26);
+  overflow: visible;
+  animation: robotFloat 3s ease-in-out infinite;
+}
+.buddyIcon img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display:block; }
+.unreadDot { display:none; position:absolute; top: -2px; right: -2px; width: 18px; height: 18px; border-radius: 50%; background: var(--red); border: 3px solid #fff; box-shadow: 0 0 0 4px rgba(239,68,68,.14); animation: pulseDot 1.3s ease-in-out infinite; }
+.unreadDot.active { display:block; }
+.buddyTeaser {
+  display: none;
+  width: min(340px, calc(100vw - 130px));
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 16px;
+  box-shadow: var(--shadow-lg);
+  animation: slideInRight .22s ease-out;
+}
+.buddyLauncher:hover .buddyTeaser { display:block; }
+.buddyTeaser b { display:block; margin-bottom: 6px; font-size: 16px; color: var(--text); }
+.buddyTeaser p { margin:0 0 12px; color: var(--muted); line-height:1.45; font-size: 13px; }
+.teaserActions { display:flex; gap:8px; flex-wrap: wrap; }
+
+.drawerBackdrop { position: fixed; inset:0; background: rgba(15,23,42,.34); backdrop-filter: blur(4px); z-index: 70; display:none; animation: fadeIn .2s ease-out; }
+.drawerBackdrop.active { display:block; }
+.drawer {
+  position: fixed; top:0; right:0; width: min(520px, 92vw); height:100vh;
+  transform: translateX(105%); transition: transform .26s ease;
+  z-index: 71; background: #fff; box-shadow: -22px 0 54px rgba(15,23,42,.18);
+  padding: 22px; overflow:auto; border-left: 1px solid var(--border);
+}
+.drawer.active { transform: translateX(0); }
+.drawerHeader { display:flex; align-items:center; justify-content:space-between; margin-bottom: 18px; }
+.drawerHeader h2 { margin:0; font-size:26px; letter-spacing:-.02em; }
+.drawerSection { background: #fff; border: 1px solid var(--border); border-radius: 20px; padding: 16px; margin-bottom: 14px; box-shadow: var(--shadow-sm); }
+.drawerSection h3 { margin:0 0 12px; font-size: 17px; color: #334155; }
+.drawerSection > button { width:100%; margin-top:8px; }
+.drawerGrid { display:grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.logs { display:grid; gap: 10px; max-height: 480px; overflow:auto; padding-right: 4px; }
+.logCard { display:grid; grid-template-columns:auto 1fr; gap:12px; background:#fff; border:1px solid var(--border); border-radius:16px; padding:14px; box-shadow:var(--shadow-sm); }
+.logIcon { width: 38px; height: 38px; border-radius: 14px; display:flex; align-items:center; justify-content:center; background: var(--blue-soft); color: var(--blue); }
+.logTitle { font-weight: 900; }
+.logSub { color: var(--muted); margin-top:4px; font-size: 12px; line-height: 1.45; }
+.logMethod { display:inline-flex; margin-top:8px; border-radius:999px; padding:5px 9px; background:var(--blue-soft); color:var(--blue); font-size:11px; font-weight:900; }
+details { margin-top: 8px; }
+summary { cursor:pointer; color: var(--blue); font-weight: 800; font-size: 12px; }
+pre { background:#0f172a; color:#e0f2fe; padding: 12px; border-radius: 14px; white-space: pre-wrap; overflow:auto; font-size: 11px; }
+
+.fullscreenModal, .chatOverlay, .modalBackdrop { position: fixed; inset: 0; display:none; background: rgba(15,23,42,.62); backdrop-filter: blur(5px); z-index: 90; padding: 22px; animation: fadeIn .2s ease-out; }
+.fullscreenModal.active, .chatOverlay.active, .modalBackdrop.active { display:block; }
+.fullCard, .chatCard, .taskModalCard { background:#fff; border: 1px solid var(--border); box-shadow: var(--shadow-lg); }
+.fullCard { width:100%; height:100%; border-radius: 28px; overflow:auto; }
+.fullHeader { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:20px 24px; border-bottom:1px solid var(--border); background:linear-gradient(90deg, #eff6ff, #fff); position: sticky; top:0; z-index: 2; }
+.fullTitle { display:flex; align-items:center; gap: 14px; }
+.fullTitle img { width:56px; height:56px; border-radius:18px; object-fit:cover; border:1px solid var(--border); background:#fff; }
+.fullTitle h2 { margin:0; font-size: 26px; letter-spacing:-.02em; }
+.fullTitle p { margin:4px 0 0; color:var(--muted); }
+.fullBody { padding: 26px; }
+.welcomeLayout { display:grid; grid-template-columns: 1fr 1fr; gap: 22px; align-items: stretch; }
+.videoBox { min-height: 310px; border-radius: 24px; background: linear-gradient(135deg,#1f2c4e,#27395f); color:#fff; display:flex; align-items:center; justify-content:center; text-align:center; padding:26px; box-shadow: inset 0 0 0 1px rgba(255,255,255,.13); }
+.play { width:80px; height:80px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 16px; background:rgba(255,255,255,.18); border:2px solid rgba(255,255,255,.42); font-size:32px; }
+.welcomeBox, .nudgeCard { border: 1px solid var(--border); border-radius: 24px; padding: 22px; background:#fff; box-shadow:var(--shadow-sm); }
+.welcomeBox h3, .nudgeCard h3 { margin-top:0; font-size: 23px; letter-spacing:-.02em; }
+.nudgeCard { background: var(--amber-soft); border-color: #fde68a; }
+.nudgeCard h3 { color:#92400e; }
+.source { color: var(--muted); margin-top: 14px; font-size: 13px; }
+.footerActions { display:flex; flex-wrap:wrap; gap:10px; margin-top:20px; }
+.chatCard { width:100%; height:100%; border-radius:28px; overflow:hidden; display:flex; flex-direction:column; }
+.chatMessages { flex:1; overflow:auto; background:#f8fafc; padding:22px; }
+.msg { display:flex; align-items:flex-start; gap:10px; margin: 12px 0; animation: fadeIn .2s ease-out; }
+.msg.user { flex-direction: row-reverse; }
+.avatar { width:42px; height:42px; border-radius:50%; object-fit:cover; border:1px solid var(--border); background:#fff; flex: none; }
+.bubble { max-width: 78%; padding: 13px 15px; border-radius: 18px; white-space: pre-line; line-height: 1.5; border: 1px solid var(--border); background:#fff; }
+.msg.bot .bubble, .bot .bubble { background:#eff6ff; border-color:#bdc8dc; }
+.msg.user .bubble, .user .bubble { background:#ecfdf5; border-color:#bbf7d0; }
+.chatbar { display:flex; gap:10px; padding:16px; border-top:1px solid var(--border); background:#fff; }
+.chatbar input { flex:1; border:1px solid var(--border); border-radius:14px; padding:13px 15px; background:#f8fafc; outline:none; }
+.chatbar input:focus { background:#fff; border-color:#8797b9; box-shadow:0 0 0 4px rgba(31,44,78,.12); }
+.taskModalCard { width:min(920px, 96vw); max-height: 92vh; overflow:auto; border-radius:26px; margin:0 auto; position:relative; top:50%; transform:translateY(-50%); }
+.modalHeader { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:20px 24px; border-bottom:1px solid var(--border); background:#fff; position:sticky; top:0; z-index:2; }
+.modalHeader h2 { margin:0; letter-spacing:-.02em; }
+.modalBody { padding:24px; }
+.detailGrid { display:grid; grid-template-columns:1fr 1fr; gap: 12px; margin:16px 0; }
+.detailBox { background:#f8fafc; border:1px solid var(--border); border-radius:16px; padding:14px; }
+.detailBox b { display:block; margin-bottom:6px; }
+.detailBox.full { grid-column:1 / -1; }
+.checklist { line-height:1.7; padding-left:22px; }
+.toast { position:fixed; right:24px; bottom:24px; z-index: 120; display:none; max-width:420px; padding:14px 16px; border-radius:16px; background:#0f172a; color:#fff; box-shadow:var(--shadow-lg); line-height:1.45; animation:slideInRight .2s ease-out; }
+.toast.active { display:block; }
+
+
+.sideRail {
+  position: fixed;
+  left: 18px;
+  top: 92px;
+  z-index: 55;
+  width: 88px;
+  padding: 10px;
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid rgba(203,213,225,.9);
+  border-radius: 24px;
+  background: rgba(255,255,255,.88);
+  backdrop-filter: blur(18px);
+  box-shadow: var(--shadow);
+  animation: slideInLeft .34s ease-out;
+}
+.sideRail.active { display: flex; }
+.sideNavItem {
+  min-height: 66px;
+  padding: 10px 8px;
+  border-radius: 18px;
+  background: #fff;
+  color: var(--blue);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+.sideNavItem:hover { background: var(--blue-soft); transform: translateY(-3px) scale(1.02); box-shadow: var(--shadow); }
+.sideIcon { font-size: 20px; line-height: 1; }
+.sideNavItem small { font-size: 11px; font-weight: 900; color: #334155; }
+.sideLangCode {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 30px;
+  border-radius: 12px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--blue), var(--blue-2));
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: .03em;
+}
+.languageSide { background: linear-gradient(180deg, #ffffff, #f6f8fc); }
+.tasksFooter { display: flex; justify-content: flex-end; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--border); }
+.updateStatusBtn {
+  min-width: 210px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--blue), var(--blue-2));
+  box-shadow: 0 12px 28px rgba(31,44,78,.22);
+}
+.updateStatusBtn:hover { transform: translateY(-3px); box-shadow: 0 18px 34px rgba(31,44,78,.28); }
+
+@keyframes slideInLeft { from { transform: translateX(-18px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes floatSoft { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes popIn { from { transform: scale(.96) translateY(8px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+.panel, .taskCard, .statBox, .loginCard, .demoCreds, .logCard, .drawerSection { animation: popIn .28s ease-out both; }
+.fullCard, .chatCard, .taskModalCard { animation: popIn .26s cubic-bezier(.2,.8,.2,1); }
+.buddyIcon { animation: pulse 2.2s infinite, floatSoft 4s ease-in-out infinite; }
+button, .sideNavItem, .taskCard, .panel, .buddyTeaser { will-change: transform, opacity; }
+button:focus-visible, .sideNavItem:focus-visible { outline: 3px solid rgba(31,44,78,.22); outline-offset: 3px; }
+.drawerBackdrop, .drawer { display: none !important; }
+
+@media (max-width: 1080px) {
+  .loginPage { grid-template-columns:1fr; padding:24px; }
+  .loginHero { min-height:auto; }
+  .heroSteps, .gridTop, .welcomeLayout { grid-template-columns:1fr; }
+  .progressStats { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  .appHeader { height:auto; min-height:72px; padding:14px; flex-wrap:wrap; }
+  .brand { min-width:auto; }
+  .brandText span, .topMenu { display:none; }
+  .authActions { width:100%; justify-content:flex-end; }
+  .dashboard { padding:18px 14px 96px; }
+  .sideRail { left: 12px; top: auto; bottom: 14px; width: auto; flex-direction: row; border-radius: 22px; }
+  .sideNavItem { min-width: 62px; min-height: 56px; padding: 8px 7px; }
+  .welcomeStrip { flex-direction:column; padding:22px; }
+  .taskCard { grid-template-columns:1fr; }
+  .taskActions { justify-content:flex-start; }
+  .progressRingWrap { grid-template-columns:1fr; }
+  .detailGrid { grid-template-columns:1fr; }
+  .detailBox.full { grid-column:auto; }
+  .buddyLauncher { right:16px; bottom:16px; }
+  .buddyIcon { width:64px; height:64px; }
+  .buddyTeaser { width:min(320px, calc(100vw - 98px)); }
+  .fullscreenModal, .chatOverlay, .modalBackdrop { padding:12px; }
+  .fullTitle h2 { font-size:22px; }
+  .fullBody { padding:18px; }
+  .bubble { max-width: 88%; }
+}
+
+</style>
+</head>
+<body>
+  <header class="appHeader">
+    <div class="brand">
+      <div class="brandLogo"><img src="/static/kmg-logo.png" alt="KMG Logo" /></div>
+      <div class="brandText">
+        <b>KMG</b>
+        <span>Онбординг КМГ</span>
+      </div>
+    </div>
+
+
+    <div id="authActions" class="authActions">
+      <button id="headerLoginBtn" class="ghost" onclick="showLogin()">Вход</button>
+    </div>
+  </header>
+
+  <aside id="sideRail" class="sideRail">
+    <button class="sideNavItem" onclick="showDashboard()" title="Главная">
+      <span class="sideIcon"><img src= "/static/home.svg"></span>
+      <small id="sideHomeLabel">Главная</small>
+    </button>
+    <button class="sideNavItem" onclick="openAccount()" title="Мой аккаунт">
+      <span class="sideIcon"><img src= "/static/user.svg"></span>
+      <small id="sideAccountLabel">Аккаунт</small>
+    </button>
+    <button class="sideNavItem languageSide" onclick="toggleUiLanguage()" title="Язык интерфейса">
+      <span id="sideLangCode" class="sideLangCode">RU</span>
+      <small id="sideLanguageLabel">Язык</small>
+    </button>
+    <button class="sideNavItem" onclick="logout()" title="Выход">
+      <span class="sideIcon"><img src= "/static/log-out.svg"></span>
+      <small id="sideLogoutLabel">Выход</small>
+    </button>
+  </aside>
+
+  <section id="loginPage" class="loginPage">
+    <div class="loginHero">
+      <div>
+        <h1 id="loginHeroTitle">Добро пожаловать в КМГ</h1>
+        <p id="loginHeroText">Войдите в корпоративный портал. Digital Buddy автоматически определит ваш день адаптации, покажет задачи, приветствие, Culture Fit карточки и поможет с вопросами по ВНД.</p>
+      </div>
+      <div class="heroSteps">
+        <div class="heroStep"><b id="heroDay1Title">День 1</b><span id="heroDay1Text">Приветствие, видео руководителя и обязательные задачи.</span></div>
+        <div class="heroStep"><b id="heroNudgeTitle">Дни 2–23</b><span id="heroNudgeText">Ежедневные карточки корпоративной культуры.</span></div>
+        <div class="heroStep"><b id="heroAdaptTitle">Месяц 1–3</b><span id="heroAdaptText">1:1 встречи, SMART-цели и поддержка HR.</span></div>
+      </div>
+    </div>
+
+    <div class="loginCard">
+      <h2 id="loginCardTitle">Вход сотрудника</h2>
+      <p id="loginCardText">Информация о сотруднике уже хранится в базе данных. Нужно ввести только логин и пароль.</p>
+      <form onsubmit="login(event)">
+        <div class="field">
+          <label id="loginInputLabel" for="loginInput">Логин</label>
+          <input id="loginInput" autocomplete="username" value="aliya" />
+        </div>
+        <div class="field">
+          <label id="passwordInputLabel" for="passwordInput">Пароль</label>
+          <input id="passwordInput" type="password" autocomplete="current-password" value="demo123" />
+        </div>
+        <button id="loginSubmitBtn" type="submit">Войти</button>
+        <div id="loginError" class="error"></div>
+      </form>
+      <div id="demoCreds" class="demoCreds">
+        <b>Демо-доступ:</b><br>
+        Логин: <b>aliya</b><br>
+        Пароль: <b>demo123</b>
+      </div>
+    </div>
+  </section>
+
+  <main id="dashboard" class="dashboard">
+    <div class="welcomeStrip">
+      <div class="pageTitle">
+        <h1 id="pageTitle">Главная страница сотрудника</h1>
+        <p id="pageSubtitle">Ваш персональный маршрут адаптации в КМГ.</p>
+      </div>
+      <div id="dayBadge" class="dayBadge">День адаптации: —</div>
+    </div>
+
+    <section class="gridTop">
+      <div class="panel">
+        <h2 id="employeePanelTitle">Информация о сотруднике</h2>
+        <div class="employeeCard">
+          <div id="employeeInitials" class="employeeAvatar">А</div>
+          <div>
+            <h3 id="employeeName" style="margin:0 0 5px;color:var(--dark)">—</h3>
+            <div id="employeePosition" style="color:var(--muted)">—</div>
+          </div>
+        </div>
+        <div class="infoRows">
+          <div class="infoRow"><span id="departmentLabel">Подразделение</span><b id="employeeDepartment">—</b></div>
+          <div class="infoRow"><span id="stageLabel">Этап адаптации</span><b id="employeeStage">—</b></div>
+          <div class="infoRow"><span id="chatLanguageLabel">Язык чата</span><b id="employeeLanguage">—</b></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2 id="progressPanelTitle">Процесс выполнения задач</h2>
+        <div class="progressRingWrap">
+          <div id="progressRing" class="progressRing"><div id="progressPercent" class="progressRingInner">0%</div></div>
+          <div>
+            <h3 id="progressTitle" style="margin:0 0 8px;color:var(--dark)">Задачи пока не созданы</h3>
+            <p id="progressDescription" style="margin:0;color:var(--muted);line-height:1.45">После входа Digital Buddy создаст задачи адаптации.</p>
+            <div class="miniProgress"><div id="taskProgressBar"></div></div>
+          </div>
+        </div>
+        <div class="progressStats">
+          <div class="statBox"><b id="statNew">0</b><span id="statNewLabel">Новые</span></div>
+          <div class="statBox"><b id="statProgress">0</b><span id="statProgressLabel">В процессе</span></div>
+          <div class="statBox warning"><b id="statSoon">0</b><span id="statSoonLabel">Скоро срок</span></div>
+          <div class="statBox danger"><b id="statOverdue">0</b><span id="statOverdueLabel">Просрочено</span></div>
+          <div class="statBox"><b id="statDone">0</b><span id="statDoneLabel">Выполнено</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel tasksPanel">
+      <div class="tasksHeader">
+        <h2 id="tasksPanelTitle">Задачи на сегодня</h2>
+        <div id="taskProgressText" class="progressText"></div>
+      </div>
+      <div id="tasks" class="tasks"></div>
+      <div class="tasksFooter">
+        <button id="updateStatusBtn" class="updateStatusBtn" onclick="advanceDay()">Обновить статус</button>
+      </div>
+    </section>
+  </main>
+
+  <div id="buddyLauncher" class="buddyLauncher">
+    <button class="buddyIcon" onclick="handleBuddyClick()" title="Digital Buddy">
+      <img src="/static/digital-buddy-face.png" alt="Digital Buddy" />
+      <span id="buddyUnreadDot" class="unreadDot" aria-hidden="true"></span>
+    </button>
+    <div id="buddyTeaser" class="buddyTeaser">
+      <b id="teaserTitle">Digital Buddy</b>
+      <p id="teaserText">Нажмите, чтобы открыть помощника.</p>
+      <div class="teaserActions">
+        <button id="teaserPrimary" class="small" onclick="openPendingPopup(event)">Открыть</button>
+        <button class="ghost small" onclick="openChat(event)">Задать вопрос</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="drawerBackdrop" class="drawerBackdrop" onclick="closeMenu()"></div>
+  <aside id="drawer" class="drawer">
+    <div class="drawerHeader">
+      <h2>Меню</h2>
+      <button class="ghost small" onclick="closeMenu()">Закрыть</button>
+    </div>
+
+    <div class="drawerSection">
+      <h3>Пульт презентации</h3>
+      <button class="secondary" onclick="resetDemo()">0. Сбросить демо</button>
+      <button class="success" onclick="scenarioDay1()">1. День 1: вход нового сотрудника</button>
+      <button class="warn" onclick="advanceDay()">Завершить день → следующий день</button>
+      <button class="ghost" onclick="repeatLogin()">Повторный вход в этот же день</button>
+      <button class="ghost" onclick="expireFirstTask()">Показать просрочку задачи</button>
+      <div class="drawerGrid" style="margin-top:8px">
+        <button class="ghost" onclick="jumpToDay(2)">День 2</button>
+        <button class="ghost" onclick="jumpToDay(14)">День 14</button>
+        <button class="ghost" onclick="jumpToDay(30)">День 30</button>
+        <button class="ghost" onclick="jumpToDay(90)">День 90</button>
+      </div>
+    </div>
+
+    <div class="drawerSection">
+      <h3>Проверка чат-бота</h3>
+      <button onclick="askSampleRu()">ВНД: опоздание</button>
+      <button onclick="askGiftRu()">Комплаенс: подарок</button>
+      <button onclick="askPassRu()">Пропускной режим</button>
+      <button class="ghost" onclick="askSampleKzFresh()">KZ первым сообщением</button>
+    </div>
+
+    <div class="drawerSection">
+      <h3>Лента интеграции Bitrix24</h3>
+      <div id="logs" class="logs"></div>
+    </div>
+  </aside>
+
+  <div id="onboardingModal" class="fullscreenModal">
+    <div class="fullCard">
+      <div class="fullHeader">
+        <div class="fullTitle">
+          <img src="/static/digital-buddy-face.png" alt="Digital Buddy" />
+          <div>
+            <h2 id="onboardingTitle">Digital Buddy</h2>
+            <p id="onboardingSubtitle">ИИ-ассистент онбординга КМГ</p>
+          </div>
+        </div>
+        <button class="ghost modalCloseText" onclick="closeOnboardingModal()">Закрыть</button>
+      </div>
+      <div id="onboardingBody" class="fullBody"></div>
+    </div>
+  </div>
+
+  <div id="chatOverlay" class="chatOverlay">
+    <div class="chatCard">
+      <div class="fullHeader">
+        <div class="fullTitle">
+          <img src="/static/digital-buddy-face.png" alt="Digital Buddy" />
+          <div>
+            <h2>Digital Buddy</h2>
+            <p>Чат-помощник по адаптации и ВНД</p>
+          </div>
+        </div>
+        <button class="ghost modalCloseText" onclick="closeChat()">Закрыть</button>
+      </div>
+      <div id="chat" class="chatMessages"></div>
+      <div class="chatbar">
+        <input id="chatInput" value="Что делать, если я опаздываю на работу?" />
+        <button id="chatSendBtn" onclick="sendChat()">Отправить</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="taskModal" class="modalBackdrop">
+    <div class="taskModalCard">
+      <div class="modalHeader">
+        <div>
+          <h2 id="taskModalTitle">Детали задачи</h2>
+          <div id="taskModalSubtitle" style="color:var(--muted)">Маршрут адаптации</div>
+        </div>
+        <button class="ghost modalCloseText" onclick="closeTaskModal()">Закрыть</button>
+      </div>
+      <div class="modalBody" id="taskModalBody"></div>
+    </div>
+  </div>
+
+  <div id="accountModal" class="modalBackdrop">
+    <div class="taskModalCard">
+      <div class="modalHeader">
+        <div>
+          <h2 id="accountModalTitle">Мой аккаунт</h2>
+          <div id="accountModalSub" style="color:var(--muted)">Данные сотрудника из базы</div>
+        </div>
+        <button class="ghost modalCloseText" onclick="closeAccount()">Закрыть</button>
+      </div>
+      <div class="modalBody" id="accountBody"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    let sessionUser = null;
+    let userId = null;
+    let latestState = null;
+    let pendingPopup = null;
+
+    let uiLanguage = localStorage.getItem('digitalBuddyUiLanguage') || 'ru';
+
+    const I18N = {
+      ru: {
+        headerLogin: 'Вход', account: 'Мой аккаунт', logout: 'Выход', sideHome: 'Главная', sideAccount: 'Аккаунт', sideLanguage: 'Язык', sideLogout: 'Выход',
+        loginHeroTitle: 'Добро пожаловать в КМГ',
+        loginHeroText: 'Войдите в корпоративный портал. Digital Buddy автоматически определит ваш день адаптации, покажет задачи, приветствие, Culture Fit карточки и поможет с вопросами по ВНД.',
+        heroDay1Title: 'День 1', heroDay1Text: 'Приветствие, видео руководителя и обязательные задачи.',
+        heroNudgeTitle: 'Дни 2–23', heroNudgeText: 'Ежедневные карточки корпоративной культуры.',
+        heroAdaptTitle: 'Месяц 1–3', heroAdaptText: '1:1 встречи, SMART-цели и поддержка HR.',
+        loginCardTitle: 'Вход сотрудника', loginCardText: 'Информация о сотруднике уже хранится в базе данных. Нужно ввести только логин и пароль.',
+        loginLabel: 'Логин', passwordLabel: 'Пароль', loginBtn: 'Войти', demoCreds: '<b>Демо-доступ:</b><br>Логин: <b>aliya</b><br>Пароль: <b>demo123</b>',
+        employeeInfo: 'Информация о сотруднике', department: 'Подразделение', stage: 'Этап адаптации', chatLanguage: 'Язык чата',
+        progressPanel: 'Процесс выполнения задач', tasksToday: 'Задачи на сегодня', updateStatus: 'Обновить статус',
+        statNew: 'Новые', statProgress: 'В процессе', statSoon: 'Скоро срок', statOverdue: 'Просрочено', statDone: 'Выполнено',
+        greeting: 'Здравствуйте', employeeFallback: 'сотрудник', routeSubtitle: 'Ваш персональный маршрут адаптации в КМГ.', dayBadge: 'День адаптации',
+        taskEmpty: 'Задачи появятся сразу после входа сотрудника в первый рабочий день.',
+        progressEmptyTitle: 'Задачи пока не созданы', progressEmptyDesc: 'После входа Digital Buddy создаст задачи адаптации.', progressDesc: 'Откройте задачу, изучите детали и отметьте выполнение.',
+        completed: 'Выполнено', newStatus: 'Новая', inProgress: 'В процессе', completedStatus: 'Выполнена', overdue: 'Просрочена', soonDue: 'Скоро срок',
+        deadline: 'Дедлайн', place: 'Место', time: 'Время', details: 'Детали', complete: 'Выполнено', close: 'Закрыть', send: 'Отправить', askQuestion: 'Задать вопрос',
+        accountTitle: 'Мой аккаунт', accountData: 'Данные сотрудника из базы', bitrixId: 'Bitrix ID', chatLangNotSet: 'Не выбран',
+        teaserWaiting: 'Digital Buddy ждёт вас', teaserDay1: 'Наведите на иконку и нажмите, чтобы начать первый день адаптации: видео, задачи и план дня.', teaserNudge: 'Для вас готова новая Culture Fit карточка. Нажмите, чтобы открыть.', teaserNext: 'Есть новое сообщение по маршруту адаптации. Нажмите, чтобы открыть.', teaserOnline: 'Digital Buddy онлайн', teaserOnlineText: 'Нажмите на иконку, чтобы открыть чат. Если появится красная точка — есть непрочитанное сообщение.', startOnboarding: 'Начать онбординг', openCard: 'Открыть карточку', open: 'Открыть', openChat: 'Открыть чат',
+        botSubtitle: 'ИИ-ассистент онбординга КМГ', chatSubtitle: 'Чат-помощник по адаптации и ВНД', chatHello: 'Здравствуйте! Я Digital Buddy. Задайте вопрос по адаптации, этике, комплаенсу или пропускному режиму.', employee: 'Сотрудник',
+        videoTitle: 'Видеообращение Председателя Правления КМГ', videoText: 'Первое приветствие для новых сотрудников.', openVideo: 'Открыть видео', firstDayHelp: 'Я помогу вам пройти первый рабочий день: покажу задачи, напомню о регламентах и отвечу на вопросы по ВНД.', nextStep: 'Следующий шаг', progress: 'Прогресс', firstDayPlan: 'План первого дня', goToTasks: 'Понятно, перейти к задачам',
+        nudgeTitle: 'Новая карточка', nudgeText: 'Digital Buddy показывает одну карточку корпоративной культуры в день. Она также дублируется в чат.', source: 'Источник ВНД', understood: 'Понятно',
+        taskDetailsTitle: 'Детали задачи адаптации', format: 'Формат', duration: 'Длительность', participants: 'Участники', taskSource: 'Источник', whatToDo: 'Что нужно сделать', expectedResult: 'Ожидаемый результат', markDone: 'Отметить как выполненную',
+        toastLogin: 'Вход выполнен. Digital Buddy подготовил маршрут адаптации.', toastLoginError: 'Неверный логин или пароль', toastLogout: 'Вы вышли из аккаунта.', toastReset: 'Демо сброшено. Алия снова на 1-м дне адаптации.', toastDay1: 'День 1 подготовлен. Нажмите на иконку Digital Buddy слева сверху.', toastNextDay: 'День завершён. Новый день адаптации', toastRepeat: 'Повторный вход обработан: дубль Culture Fit карточки не создан.', toastOverdue: 'Одна задача стала просроченной. Digital Buddy отправил уведомление, проверьте красную точку на иконке.', toastComplete: 'Задача отмечена как выполненная. Прогресс маршрута обновлён.', toastNeedLogin: 'Сначала войдите в систему.',
+        logEmpty: 'Лента пока пустая. После входа появятся события Bitrix24.', payload: 'Показать технический payload',
+        taskNew: '🔵 Новая', taskInProgress: '🟡 В процессе', taskCompleted: '✅ Выполнена', taskOverdue: '🔴 Просрочена', taskSoon: '🟠 Скоро срок', duePrefix: 'Дедлайн', noDeadline: 'не указан'
+      },
+      kz: {
+        headerLogin: 'Кіру', account: 'Менің аккаунтым', logout: 'Шығу', sideHome: 'Басты', sideAccount: 'Аккаунт', sideLanguage: 'Тіл', sideLogout: 'Шығу',
+        loginHeroTitle: 'ҚМГ-ге қош келдіңіз',
+        loginHeroText: 'Корпоративтік порталға кіріңіз. Digital Buddy бейімделу күнін анықтап, тапсырмаларды, сәлемдесуді, Culture Fit карточкаларын және ІНҚ бойынша көмекті көрсетеді.',
+        heroDay1Title: '1-күн', heroDay1Text: 'Сәлемдесу, басшының видеосы және міндетті тапсырмалар.',
+        heroNudgeTitle: '2–23 күндер', heroNudgeText: 'Корпоративтік мәдениет бойынша күнделікті карточкалар.',
+        heroAdaptTitle: '1–3 ай', heroAdaptText: '1:1 кездесулер, SMART мақсаттар және HR қолдауы.',
+        loginCardTitle: 'Қызметкердің кіруі', loginCardText: 'Қызметкер туралы ақпарат базаға алдын ала енгізілген. Тек логин мен парольді енгізіңіз.',
+        loginLabel: 'Логин', passwordLabel: 'Құпиясөз', loginBtn: 'Кіру', demoCreds: '<b>Демо-қолжетімділік:</b><br>Логин: <b>aliya</b><br>Құпиясөз: <b>demo123</b>',
+        employeeInfo: 'Қызметкер туралы ақпарат', department: 'Бөлімше', stage: 'Бейімделу кезеңі', chatLanguage: 'Чат тілі',
+        progressPanel: 'Тапсырмалардың орындалу барысы', tasksToday: 'Бүгінгі тапсырмалар', updateStatus: 'Статусты жаңарту',
+        statNew: 'Жаңа', statProgress: 'Орындалуда', statSoon: 'Мерзімі жақын', statOverdue: 'Мерзімі өтті', statDone: 'Орындалды',
+        greeting: 'Сәлеметсіз бе', employeeFallback: 'қызметкер', routeSubtitle: 'ҚМГ-дегі жеке бейімделу бағытыңыз.', dayBadge: 'Бейімделу күні',
+        taskEmpty: 'Қызметкер бірінші жұмыс күні кіргеннен кейін тапсырмалар пайда болады.',
+        progressEmptyTitle: 'Тапсырмалар әлі жасалмаған', progressEmptyDesc: 'Кіргеннен кейін Digital Buddy бейімделу тапсырмаларын жасайды.', progressDesc: 'Тапсырманы ашып, мәліметтерін қарап, орындалғанын белгілеңіз.',
+        completed: 'Орындалды', newStatus: 'Жаңа', inProgress: 'Орындалуда', completedStatus: 'Орындалды', overdue: 'Мерзімі өтті', soonDue: 'Мерзімі жақын',
+        deadline: 'Мерзім', place: 'Өтетін орны', time: 'Уақыты', details: 'Мәліметтер', complete: 'Орындалды', close: 'Жабу', send: 'Жіберу', askQuestion: 'Сұрақ қою',
+        accountTitle: 'Менің аккаунтым', accountData: 'Базадағы қызметкер деректері', bitrixId: 'Bitrix ID', chatLangNotSet: 'Таңдалмаған',
+        teaserWaiting: 'Digital Buddy сізді күтуде', teaserDay1: 'Бірінші бейімделу күнін бастау үшін иконканы басыңыз: видео, тапсырмалар және күн жоспары.', teaserNudge: 'Сізге жаңа Culture Fit карточкасы дайын. Ашу үшін басыңыз.', teaserNext: 'Бейімделу бағыты бойынша жаңа хабарлама бар. Ашу үшін басыңыз.', teaserOnline: 'Digital Buddy онлайн', teaserOnlineText: 'Чатты ашу үшін иконканы басыңыз. Қызыл нүкте болса — оқылмаған хабарлама бар.', startOnboarding: 'Онбордингті бастау', openCard: 'Карточканы ашу', open: 'Ашу', openChat: 'Чатты ашу',
+        botSubtitle: 'ҚМГ онбордингі бойынша ИИ-көмекші', chatSubtitle: 'Бейімделу және ІНҚ бойынша чат-көмекші', chatHello: 'Сәлеметсіз бе! Мен Digital Buddy. Бейімделу, этика, комплаенс немесе өткізу режимі бойынша сұрақ қойыңыз.', employee: 'Қызметкер',
+        videoTitle: 'ҚМГ Басқарма төрағасының бейнеүндеуі', videoText: 'Жаңа қызметкерлерге арналған алғашқы сәлемдесу.', openVideo: 'Видеоны ашу', firstDayHelp: 'Мен бірінші жұмыс күнінен өтуге көмектесемін: тапсырмаларды көрсетемін, регламенттерді еске саламын және ІНҚ бойынша сұрақтарға жауап беремін.', nextStep: 'Келесі қадам', progress: 'Прогресс', firstDayPlan: 'Бірінші күн жоспары', goToTasks: 'Түсінікті, тапсырмаларға өту',
+        nudgeTitle: 'Жаңа карточка', nudgeText: 'Digital Buddy корпоративтік мәдениет бойынша күніне бір карточка көрсетеді. Ол чатқа да жіберіледі.', source: 'ІНҚ дереккөзі', understood: 'Түсінікті',
+        taskDetailsTitle: 'Бейімделу тапсырмасының мәліметтері', format: 'Формат', duration: 'Ұзақтығы', participants: 'Қатысушылар', taskSource: 'Дереккөз', whatToDo: 'Не істеу керек', expectedResult: 'Күтілетін нәтиже', markDone: 'Орындалды деп белгілеу',
+        toastLogin: 'Кіру орындалды. Digital Buddy бейімделу бағытын дайындады.', toastLoginError: 'Логин немесе құпиясөз қате', toastLogout: 'Аккаунттан шықтыңыз.', toastReset: 'Демо қалпына келтірілді. Әлия қайтадан 1-күнде.', toastDay1: '1-күн дайын. Сол жақтағы Digital Buddy иконкасын басыңыз.', toastNextDay: 'Күн аяқталды. Жаңа бейімделу күні', toastRepeat: 'Қайта кіру өңделді: Culture Fit карточкасы қайталанған жоқ.', toastOverdue: 'Бір тапсырманың мерзімі өтті. Digital Buddy хабарлама жіберді, иконкадағы қызыл нүктені тексеріңіз.', toastComplete: 'Тапсырма орындалды деп белгіленді. Прогресс жаңартылды.', toastNeedLogin: 'Алдымен жүйеге кіріңіз.',
+        logEmpty: 'Лента әзірге бос. Кіргеннен кейін Bitrix24 оқиғалары пайда болады.', payload: 'Техникалық payload көрсету',
+        taskNew: '🔵 Жаңа', taskInProgress: '🟡 Орындалуда', taskCompleted: '✅ Орындалды', taskOverdue: '🔴 Мерзімі өтті', taskSoon: '🟠 Мерзімі жақын', duePrefix: 'Мерзім', noDeadline: 'көрсетілмеген'
+      }
+    };
+
+    const TASK_TITLE_KZ = {
+      safety: 'Қауіпсіздік техникасы бойынша нұсқама',
+      information_security: 'Ақпараттық қауіпсіздік бойынша нұсқама',
+      access_control: 'Өткізу режимімен танысу',
+      ethics: 'Іскерлік этика кодексі',
+      compliance: 'Комплаенс модулі: сыбайлас жемқорлыққа қарсы саясат және сенім желісі',
+      day14_pulse: '14-күн пульс-сауалнамасы',
+      day30_manager_1to1: 'Басшымен 1:1 кездесу',
+      day30_nps: '30-күн NPS сауалнамасы',
+      day60_smart_goals: 'SMART мақсаттарын нақтылау',
+      day90_hr_report: 'Бейімделу бойынша қорытынды HR-есеп'
+    };
+
+    function tr(key) {
+      return (I18N[uiLanguage] && I18N[uiLanguage][key]) || I18N.ru[key] || key;
+    }
+
+    function setText(id, value) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = value;
+    }
+
+    function localizeTaskTitle(task) {
+      if (uiLanguage === 'kz' && TASK_TITLE_KZ[task.task_type]) return TASK_TITLE_KZ[task.task_type];
+      return task.title || '';
+    }
+
+    function localizeStage(st) {
+      const day = Number(st.onboarding_day || 1);
+      if (uiLanguage === 'ru') return st.stage_info;
+      if (day <= 1) return {stage: 'Танысу', stage_period: '1-күн', stage_description: 'Бірінші жұмыс күні: сәлемдесу, видео және міндетті тапсырмалар.'};
+      if (day <= 30) return {stage: 'Қатыстыру', stage_period: '2–30 күндер', stage_description: 'Culture Fit карточкалары, алғашқы сауалнамалар және бейімделу тапсырмалары.'};
+      if (day <= 90) return {stage: 'Бейімделу', stage_period: '1–3 ай', stage_description: '1:1 кездесулер, SMART мақсаттар және аралық бағалау.'};
+      return {stage: 'Бекіту', stage_period: '3–12 ай', stage_description: 'Қорытынды бағалау, HR-аналитика және даму жоспары.'};
+    }
+
+    function progressText(progress) {
+      const done = progress.completed || 0;
+      const total = progress.total || 0;
+      if (!total) return uiLanguage === 'kz' ? 'Тапсырмалар әлі жасалмаған' : 'Задачи пока не созданы';
+      return uiLanguage === 'kz' ? `${done} / ${total} тапсырма орындалды` : `${done} / ${total} задач выполнено`;
+    }
+
+    function applyStaticTranslations() {
+      document.documentElement.lang = uiLanguage === 'kz' ? 'kk' : 'ru';
+      setText('headerLoginBtn', tr('headerLogin'));
+      setText('sideHomeLabel', tr('sideHome'));
+      setText('sideAccountLabel', tr('sideAccount'));
+      setText('sideLanguageLabel', tr('sideLanguage'));
+      setText('sideLogoutLabel', tr('sideLogout'));
+      setText('sideLangCode', uiLanguage === 'kz' ? 'KZ' : 'RU');
+      setText('loginHeroTitle', tr('loginHeroTitle'));
+      setText('loginHeroText', tr('loginHeroText'));
+      setText('heroDay1Title', tr('heroDay1Title'));
+      setText('heroDay1Text', tr('heroDay1Text'));
+      setText('heroNudgeTitle', tr('heroNudgeTitle'));
+      setText('heroNudgeText', tr('heroNudgeText'));
+      setText('heroAdaptTitle', tr('heroAdaptTitle'));
+      setText('heroAdaptText', tr('heroAdaptText'));
+      setText('loginCardTitle', tr('loginCardTitle'));
+      setText('loginCardText', tr('loginCardText'));
+      setText('loginInputLabel', tr('loginLabel'));
+      setText('passwordInputLabel', tr('passwordLabel'));
+      setText('loginSubmitBtn', tr('loginBtn'));
+      const demo = document.getElementById('demoCreds'); if (demo) demo.innerHTML = tr('demoCreds');
+      setText('employeePanelTitle', tr('employeeInfo'));
+      setText('departmentLabel', tr('department'));
+      setText('stageLabel', tr('stage'));
+      setText('chatLanguageLabel', tr('chatLanguage'));
+      setText('progressPanelTitle', tr('progressPanel'));
+      setText('tasksPanelTitle', tr('tasksToday'));
+      setText('updateStatusBtn', tr('updateStatus'));
+      setText('statNewLabel', tr('statNew'));
+      setText('statProgressLabel', tr('statProgress'));
+      setText('statSoonLabel', tr('statSoon'));
+      setText('statOverdueLabel', tr('statOverdue'));
+      setText('statDoneLabel', tr('statDone'));
+      setText('chatSendBtn', tr('send'));
+      document.querySelectorAll('.modalCloseText').forEach(el => el.textContent = tr('close'));
+    }
+
+    function toggleUiLanguage() {
+      uiLanguage = uiLanguage === 'ru' ? 'kz' : 'ru';
+      localStorage.setItem('digitalBuddyUiLanguage', uiLanguage);
+      applyStaticTranslations();
+      if (latestState) {
+        renderAuth(); renderState(latestState); renderTasks(latestState); renderLogs(latestState); renderBuddyTeaser();
+      }
+      showToast(uiLanguage === 'kz' ? 'Интерфейс қазақ тіліне ауыстырылды.' : 'Интерфейс переключён на русский язык.');
+    }
+
+    async function api(path, options={}) {
+      const res = await fetch(path, { headers:{'Content-Type':'application/json'}, ...options });
+      if (!res.ok) throw new Error(await res.text());
+      return await res.json();
+    }
+
+    function boot() {
+      applyStaticTranslations();
+      const saved = localStorage.getItem('digitalBuddySession');
+      if (saved) {
+        try {
+          sessionUser = JSON.parse(saved);
+          userId = sessionUser.bitrix_user_id;
+          showDashboard();
+          loadAfterSessionRestore();
+          return;
+        } catch (e) {
+          localStorage.removeItem('digitalBuddySession');
+        }
+      }
+      showLogin();
+    }
+
+    function renderAuth() {
+      const auth = document.getElementById('authActions');
+      if (!sessionUser) {
+        auth.innerHTML = `<button id="headerLoginBtn" class="ghost" onclick="showLogin()">${tr('headerLogin')}</button>`;
+        return;
+      }
+      const firstName = (sessionUser.full_name || tr('employeeFallback')).split(' ')[0];
+      auth.innerHTML = `
+        <div class="accountBadge"><span class="dot"></span>${escapeHtml(firstName)}</div>
+        <button class="ghost" onclick="openAccount()">${tr('account')}</button>
+        <button class="danger" onclick="logout()">${tr('logout')}</button>`;
+    }
+
+    function showLogin() {
+      sessionUser = null;
+      userId = null;
+      pendingPopup = null;
+      document.getElementById('loginPage').style.display = 'grid';
+      document.getElementById('dashboard').classList.remove('active');
+      document.getElementById('buddyLauncher').classList.remove('active');
+      document.getElementById('sideRail').classList.remove('active');
+      closeMenu();
+      applyStaticTranslations();
+      renderAuth();
+    }
+
+    function showDashboard() {
+      if (!sessionUser) {
+        document.getElementById('loginPage').style.display = 'grid';
+        document.getElementById('dashboard').classList.remove('active');
+        return;
+      }
+      document.getElementById('loginPage').style.display = 'none';
+      document.getElementById('dashboard').classList.add('active');
+      document.getElementById('buddyLauncher').classList.add('active');
+      document.getElementById('sideRail').classList.add('active');
+      applyStaticTranslations();
+      renderAuth();
+    }
+
+    async function login(event) {
+      event.preventDefault();
+      document.getElementById('loginError').textContent = '';
+      const loginValue = document.getElementById('loginInput').value.trim();
+      const passwordValue = document.getElementById('passwordInput').value.trim();
+      try {
+        const res = await api('/api/auth/login', {method:'POST', body:JSON.stringify({login:loginValue, password:passwordValue})});
+        sessionUser = res.user;
+        userId = sessionUser.bitrix_user_id;
+        localStorage.setItem('digitalBuddySession', JSON.stringify(sessionUser));
+        showDashboard();
+        await api('/webhooks/bitrix/on-login', {method:'POST', body:JSON.stringify({bitrix_user_id:userId})});
+        await loadState(true);
+        await peekPopup();
+        showToast(tr('toastLogin'));
+      } catch (e) {
+        document.getElementById('loginError').textContent = tr('toastLoginError');
+      }
+    }
+
+    async function loadAfterSessionRestore() {
+      await loadState(true);
+      await peekPopup();
+    }
+
+    function logout() {
+      localStorage.removeItem('digitalBuddySession');
+      closeMenu();
+      showLogin();
+      showToast(tr('toastLogout'));
+    }
+
+    function openMenu() { if (sessionUser) loadState(false); }
+    function closeMenu() {
+      const b = document.getElementById('drawerBackdrop');
+      const d = document.getElementById('drawer');
+      if (b) b.classList.remove('active');
+      if (d) d.classList.remove('active');
+    }
+
+    function openAccount() {
+      if (!latestState) return;
+      const u = latestState.user;
+      const lang = getLangLabel(u.language);
+      document.getElementById('accountBody').innerHTML = `
+        <div class="employeeCard">
+          <div class="employeeAvatar">${escapeHtml(initials(u.full_name))}</div>
+          <div><h3 style="margin:0 0 6px;color:var(--dark)">${escapeHtml(u.full_name)}</h3><div style="color:var(--muted)">${escapeHtml(u.position || '')}</div></div>
+        </div>
+        <div class="infoRows">
+          <div class="infoRow"><span>${tr('bitrixId')}</span><b>${escapeHtml(u.bitrix_user_id)}</b></div>
+          <div class="infoRow"><span>${tr('department')}</span><b>${escapeHtml(u.department || '')}</b></div>
+          <div class="infoRow"><span>${tr('dayBadge')}</span><b>${latestState.onboarding_day}</b></div>
+          <div class="infoRow"><span>${tr('chatLanguage')}</span><b>${lang}</b></div>
+        </div>
+        <div class="footerActions"><button class="danger" onclick="logout();closeAccount();">${tr('logout')}</button></div>`;
+      setText('accountModalTitle', tr('accountTitle')); setText('accountModalSub', tr('accountData')); document.getElementById('accountModal').classList.add('active');
+    }
+    function closeAccount() { document.getElementById('accountModal').classList.remove('active'); }
+
+    async function peekPopup() {
+      if (!userId) return;
+      const popup = await api(`/api/popup/peek?bitrix_user_id=${userId}`);
+      pendingPopup = popup.show ? popup : null;
+      renderBuddyTeaser();
+      renderUnread(latestState);
+    }
+
+    function renderBuddyTeaser() {
+      const teaser = document.getElementById('buddyTeaser');
+      const title = document.getElementById('teaserTitle');
+      const text = document.getElementById('teaserText');
+      const btn = document.getElementById('teaserPrimary');
+      if (!sessionUser) return;
+      if (pendingPopup) {
+        title.textContent = tr('teaserWaiting');
+        if (pendingPopup.popup_type === 'day1') {
+          text.textContent = tr('teaserDay1');
+          btn.textContent = tr('startOnboarding');
+        } else if (pendingPopup.popup_type === 'nudge') {
+          text.textContent = tr('teaserNudge');
+          btn.textContent = tr('openCard');
+        } else {
+          text.textContent = tr('teaserNext');
+          btn.textContent = tr('open');
+        }
+      } else {
+        title.textContent = tr('teaserOnline');
+        text.textContent = tr('teaserOnlineText');
+        btn.textContent = tr('openChat');
+      }
+      renderUnread(latestState);
+    }
+
+    async function handleBuddyClick() {
+      if (pendingPopup) await openPendingPopup();
+      else openChat();
+    }
+
+    async function openPendingPopup(event) {
+      if (event) event.stopPropagation();
+      if (!pendingPopup) {
+        openChat();
+        return;
+      }
+      const popup = pendingPopup;
+      pendingPopup = null;
+      if (popup.popup_id) await api(`/api/popup/${popup.popup_id}/shown`, {method:'POST'});
+      showOnboardingPopup(popup);
+      renderBuddyTeaser();
+      renderUnread(latestState);
+      await loadState(false);
+    }
+
+    function showOnboardingPopup(data) {
+      const body = document.getElementById('onboardingBody');
+      document.getElementById('onboardingTitle').textContent = 'Digital Buddy';
+      document.getElementById('onboardingSubtitle').textContent = tr('botSubtitle');
+      let html = '';
+      if (data.popup_type === 'day1') {
+        const taskList = (data.tasks || []).map(t => `<li>${escapeHtml(localizeTaskTitle(t))} — ${tr('deadline')}: 18:00</li>`).join('');
+        html = `
+          <div class="welcomeLayout">
+            <div class="videoBox">
+              <div>
+                <div class="play">▶</div>
+                <h2 style="margin:0 0 10px">${tr('videoTitle')}</h2>
+                <p style="margin:0 0 18px;opacity:.92">${tr('videoText')}</p>
+                <a style="color:white;text-decoration:underline" target="_blank" href="${escapeHtml(data.video_url || '#')}">${tr('openVideo')}</a>
+              </div>
+            </div>
+            <div class="welcomeBox">
+              <h3>${escapeHtml(data.greeting || tr('loginHeroTitle'))}</h3>
+              <p>${tr('firstDayHelp')}</p>
+              <p><b>${tr('nextStep')}:</b> ${escapeHtml(data.next_task || tr('tasksToday'))}</p>
+              <p><b>${tr('progress')}:</b> ${escapeHtml(data.progress_text || '')}</p>
+              <div class="miniProgress"><div style="width:${latestState?.task_progress?.percent || 0}%"></div></div>
+              <h3>${tr('firstDayPlan')}</h3>
+              <ol>${taskList}</ol>
+              <div class="footerActions">
+                <button onclick="closeOnboardingModal()">${tr('goToTasks')}</button>
+                <button class="ghost" onclick="closeOnboardingModal();openChat();">${tr('askQuestion')}</button>
+              </div>
+            </div>
+          </div>`;
+      } else if (data.nudge) {
+        html = `
+          <div class="welcomeLayout">
+            <div class="welcomeBox">
+              <h3>${escapeHtml(data.greeting || tr('nudgeTitle'))}</h3>
+              <p>${tr('nudgeText')}</p>
+              <p><b>${escapeHtml(data.progress_text || '')}</b></p>
+            </div>
+            <div class="nudgeCard">
+              <h3>${escapeHtml(data.nudge.topic)}</h3>
+              <p>${escapeHtml(data.nudge.text)}</p>
+              <div class="source">${tr('source')}: ${escapeHtml(data.nudge.source_document)}</div>
+              <div class="footerActions">
+                <button onclick="closeOnboardingModal()">${tr('understood')}</button>
+                <button class="ghost" onclick="closeOnboardingModal();openChat();">${tr('askQuestion')}</button>
+              </div>
+            </div>
+          </div>`;
+      } else {
+        html = `
+          <div class="welcomeBox">
+            <h3>${escapeHtml(data.greeting || 'Digital Buddy')}</h3>
+            <p>${escapeHtml(data.message || '')}</p>
+            <p><b>${tr('nextStep')}:</b> ${escapeHtml(data.next_task || '')}</p>
+            <div class="footerActions"><button onclick="closeOnboardingModal()">${tr('understood')}</button><button class="ghost" onclick="closeOnboardingModal();openChat();">${tr('askQuestion')}</button></div>
+          </div>`;
+      }
+      body.innerHTML = html;
+      document.getElementById('onboardingModal').classList.add('active');
+    }
+    function closeOnboardingModal() { document.getElementById('onboardingModal').classList.remove('active'); }
+
+    async function openChat(event) {
+      if (event) event.stopPropagation();
+      document.getElementById('chatOverlay').classList.add('active');
+      await markNotificationsRead();
+      setTimeout(() => document.getElementById('chatInput').focus(), 50);
+    }
+    function closeChat() { document.getElementById('chatOverlay').classList.remove('active'); }
+
+    async function markNotificationsRead() {
+      if (!userId) return;
+      try {
+        await api(`/api/notifications/read?bitrix_user_id=${userId}`, {method:'POST'});
+        if (latestState) {
+          latestState.unread_notifications = 0;
+          renderUnread(latestState);
+        }
+      } catch (e) {
+        console.warn('notification read failed', e);
+      }
+    }
+
+    function renderUnread(st) {
+      const dot = document.getElementById('buddyUnreadDot');
+      if (!dot) return;
+      const unread = Number(st?.unread_notifications || 0);
+      dot.classList.toggle('active', Boolean(sessionUser && (unread > 0 || pendingPopup)));
+    }
+
+    async function resetDemo() {
+      if (!sessionUser) return showToast(tr('toastNeedLogin'));
+      await api(`/api/demo/reset?bitrix_user_id=${userId}`, {method:'POST'});
+      await loadState(true);
+      pendingPopup = null;
+      renderBuddyTeaser();
+      closeMenu();
+      showToast(tr('toastReset'));
+    }
+
+    async function scenarioDay1() {
+      if (!sessionUser) return showToast(tr('toastNeedLogin'));
+      await api(`/api/demo/reset?bitrix_user_id=${userId}`, {method:'POST'});
+      await api('/webhooks/bitrix/on-login', {method:'POST', body:JSON.stringify({bitrix_user_id:userId})});
+      await loadState(true);
+      await peekPopup();
+      closeMenu();
+      showToast(tr('toastDay1'));
+    }
+
+    async function advanceDay() {
+      if (!sessionUser) return showToast(tr('toastNeedLogin'));
+      const res = await api(`/api/demo/advance-day?bitrix_user_id=${userId}`, {method:'POST'});
+      await loadState(false);
+      await peekPopup();
+      closeMenu();
+      if (pendingPopup) showToast(`${tr('toastNextDay')}: ${res.new_day}.`);
+      else showToast(`${tr('toastNextDay')}: ${res.new_day}.`);
+    }
+
+    async function jumpToDay(day) {
+      if (!sessionUser) return showToast(tr('toastNeedLogin'));
+      await api('/api/demo/set-day', {method:'POST', body:JSON.stringify({bitrix_user_id:userId, day_number:day})});
+      await api('/webhooks/bitrix/on-login', {method:'POST', body:JSON.stringify({bitrix_user_id:userId})});
+      await loadState(false);
+      await peekPopup();
+      closeMenu();
+      showToast(`Переход на день ${day}. Нажмите на Digital Buddy, если появилось новое сообщение.`);
+    }
+
+    async function repeatLogin() {
+      if (!sessionUser) return showToast(tr('toastNeedLogin'));
+      await api('/webhooks/bitrix/on-login', {method:'POST', body:JSON.stringify({bitrix_user_id:userId})});
+      await loadState(false);
+      const before = pendingPopup?.popup_id;
+      await peekPopup();
+      closeMenu();
+      if (!pendingPopup || pendingPopup.popup_id === before) showToast(tr('toastRepeat'));
+      else showToast(tr('teaserNext'));
+    }
+
+    async function expireFirstTask() {
+      if (!sessionUser) return showToast(tr('toastNeedLogin'));
+      await api(`/api/demo/expire-first-task?bitrix_user_id=${userId}`, {method:'POST'});
+      await loadState(false);
+      closeMenu();
+      showToast(tr('toastOverdue'));
+    }
+
+    async function askSampleRu() {
+      closeMenu(); openChat();
+      document.getElementById('chatInput').value = 'Что делать, если я опаздываю на работу?';
+      await sendChat();
+    }
+    async function askGiftRu() {
+      closeMenu(); openChat();
+      document.getElementById('chatInput').value = 'Можно ли принять подарок от подрядчика?';
+      await sendChat();
+    }
+    async function askPassRu() {
+      closeMenu(); openChat();
+      document.getElementById('chatInput').value = 'Можно ли передать свой пропуск коллеге?';
+      await sendChat();
+    }
+    async function askSampleKzFresh() {
+      if (!sessionUser) return showToast(tr('toastNeedLogin'));
+      await resetDemo();
+      openChat();
+      document.getElementById('chatInput').value = 'Маған сыйлық ұсынса не істеу керек?';
+      await sendChat();
+    }
+
+    async function sendChat() {
+      if (!sessionUser) return;
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if (!text) return;
+      addMsg('user', text);
+      input.value = '';
+      const res = await api('/webhooks/bitrix/bot-message', {method:'POST', body:JSON.stringify({bitrix_user_id:userId, message:text})});
+      addMsg('bot', res.answer);
+      await loadState(false);
+      if (document.getElementById('chatOverlay').classList.contains('active')) await markNotificationsRead();
+    }
+
+    function addMsg(role, text) {
+      const chat = document.getElementById('chat');
+      const avatar = role === 'bot'
+        ? `<img class="avatar" src="/static/digital-buddy-face.png" alt="Digital Buddy" />`
+        : `<div class="avatar" style="display:flex;align-items:center;justify-content:center;background:#dff5e9">👤</div>`;
+      const name = role === 'bot' ? '<b>Digital Buddy</b><br/>' : `<b>${tr('employee')}</b><br/>`;
+      chat.insertAdjacentHTML('beforeend', `<div class="msg ${role}">${avatar}<div class="bubble">${name}${escapeHtml(text)}</div></div>`);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function renderChat(messages) {
+      const chat = document.getElementById('chat');
+      chat.innerHTML = '';
+      for (const m of messages) addMsg(m.role, m.message);
+      if (!messages || !messages.length) {
+        addMsg('bot', tr('chatHello'));
+      }
+    }
+
+    async function showTaskDetails(taskId) {
+      const started = await api(`/api/tasks/${taskId}/start`, {method:'POST'});
+      const task = started.task;
+      const d = task.details || {};
+      document.getElementById('taskModalTitle').textContent = localizeTaskTitle(task);
+      document.getElementById('taskModalSubtitle').textContent = tr('taskDetailsTitle');
+      const checklist = (d.checklist || []).map(x => `<li>${escapeHtml(x)}</li>`).join('');
+      const participants = (d.participants || []).map(x => escapeHtml(x)).join(', ');
+      const completeBtn = task.status === 'completed'
+        ? `<span class="pill completed">${tr('taskCompleted')}</span>`
+        : `<button class="success" onclick="completeTask(${task.id}); closeTaskModal();">${tr('markDone')}</button>`;
+      document.getElementById('taskModalBody').innerHTML = `
+        <p>${taskBadges(task)}</p>
+        <p>${escapeHtml(d.description || '')}</p>
+        <div class="detailGrid">
+          <div class="detailBox"><b>${tr('format')}</b><br>${escapeHtml(d.format || '')}</div>
+          <div class="detailBox"><b>${tr('place')}</b><br>${escapeHtml(d.place || '')}</div>
+          <div class="detailBox"><b>${tr('time')}</b><br>${escapeHtml(d.time || '')}</div>
+          <div class="detailBox"><b>${tr('duration')}</b><br>${escapeHtml(d.duration || '')}</div>
+          <div class="detailBox full"><b>${tr('participants')}</b><br>${participants}</div>
+          <div class="detailBox full"><b>${tr('taskSource')}</b><br>${escapeHtml(d.source || '')}</div>
+        </div>
+        <h3>${tr('whatToDo')}</h3>
+        <ol class="checklist">${checklist}</ol>
+        <p><b>${tr('expectedResult')}:</b> ${escapeHtml(d.result || '')}</p>
+        <div class="footerActions">${completeBtn}<button class="ghost" onclick="closeTaskModal();">${tr('close')}</button></div>`;
+      document.getElementById('taskModal').classList.add('active');
+      await loadState(false);
+    }
+    function closeTaskModal() { document.getElementById('taskModal').classList.remove('active'); }
+
+    async function completeTask(taskId) {
+      await api(`/api/tasks/${taskId}/complete`, {method:'POST'});
+      await loadState(false);
+      showToast(tr('toastComplete'));
+    }
+
+    function renderState(st) {
+      const u = st.user;
+      const stageInfo = localizeStage(st);
+      const lang = getLangLabel(u.language);
+      const progress = st.task_progress || {percent:0,total:0,new:0,in_progress:0,completed:0,text:''};
+      const firstName = escapeHtml((u.full_name || '').split(' ')[0] || tr('employeeFallback'));
+      document.getElementById('pageTitle').textContent = `${tr('greeting')}, ${firstName}!`;
+      document.getElementById('pageSubtitle').textContent = stageInfo.stage_description || tr('routeSubtitle');
+      document.getElementById('dayBadge').textContent = `${tr('dayBadge')}: ${st.onboarding_day}`;
+      document.getElementById('employeeInitials').textContent = initials(u.full_name);
+      document.getElementById('employeeName').textContent = u.full_name;
+      document.getElementById('employeePosition').textContent = u.position || '';
+      document.getElementById('employeeDepartment').textContent = u.department || '';
+      document.getElementById('employeeStage').textContent = `${stageInfo.stage} · ${stageInfo.stage_period}`;
+      document.getElementById('employeeLanguage').textContent = lang;
+      document.getElementById('progressTitle').textContent = progressText(progress);
+      document.getElementById('progressDescription').textContent = progress.total ? tr('progressDesc') : tr('progressEmptyDesc');
+      document.getElementById('progressPercent').textContent = `${progress.percent || 0}%`;
+      document.getElementById('progressRing').style.setProperty('--deg', `${(progress.percent || 0) * 3.6}deg`);
+      document.getElementById('taskProgressBar').style.width = `${progress.percent || 0}%`;
+      document.getElementById('taskProgressText').textContent = `${progressText(progress)} · ${progress.percent || 0}%`;
+      document.getElementById('statNew').textContent = progress.new || 0;
+      document.getElementById('statProgress').textContent = progress.in_progress || 0;
+      document.getElementById('statSoon').textContent = progress.soon_due || 0;
+      document.getElementById('statOverdue').textContent = progress.overdue || 0;
+      document.getElementById('statDone').textContent = progress.completed || 0;
+      renderUnread(st);
+      applyStaticTranslations();
+    }
+
+    function renderTasks(st) {
+      const tasks = st.tasks || [];
+      if (!tasks.length) {
+        document.getElementById('tasks').innerHTML = `<div class="empty">${tr('taskEmpty')}</div>`;
+        return;
+      }
+      document.getElementById('tasks').innerHTML = tasks.map(t => {
+        const visual = t.visual_status || t.status || 'new';
+        const details = t.details || {};
+        return `
+          <div class="taskCard visual-${visual}" onclick="showTaskDetails(${t.id})">
+            <div>
+              <div class="taskTitle">${escapeHtml(localizeTaskTitle(t))}</div>
+              <div class="taskMeta">
+                ${taskBadges(t)}
+                <span>${tr('deadline')}: ${formatDate(t.deadline)}</span>
+                ${details.place ? `<span>${tr('place')}: ${escapeHtml(details.place)}</span>` : ''}
+                ${details.time ? `<span>${tr('time')}: ${escapeHtml(details.time)}</span>` : ''}
+                <span>${escapeHtml(t.bitrix_task_id || '')}</span>
+              </div>
+            </div>
+            <div class="taskActions" onclick="event.stopPropagation()">
+              <button class="ghost small" onclick="showTaskDetails(${t.id})">${tr('details')}</button>
+              ${t.status !== 'completed' ? `<button class="success small" onclick="completeTask(${t.id})">${tr('complete')}</button>` : ''}
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    function renderLogs(st) {
+      const logs = st.bitrix_log || [];
+      if (!logs.length) {
+        document.getElementById('logs').innerHTML = `<div class="empty">${tr('logEmpty')}</div>`;
+        return;
+      }
+      document.getElementById('logs').innerHTML = logs.map(log => {
+        const info = describeLog(log);
+        return `<div class="logCard">
+          <div class="logIcon">${info.icon}</div>
+          <div>
+            <div class="logTitle">${escapeHtml(info.title)}</div>
+            <div class="logSub">${escapeHtml(info.subtitle)} · ${formatDate(log.created_at)}</div>
+            <span class="logMethod">${escapeHtml(log.method)}</span>
+            <details><summary>${tr('payload')}</summary><pre>${escapeHtml(JSON.stringify(log.payload, null, 2))}</pre></details>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    function describeLog(log) {
+      const p = log.payload || {};
+      if (log.method === 'tasks.task.add') return {icon:'✅', title:'Создана задача в Bitrix24', subtitle:p.fields?.TITLE || 'Новая задача'};
+      if (log.method === 'tasks.task.update') {
+        const status = p.fields?.STATUS === 'completed' ? 'выполнена' : 'в процессе';
+        return {icon:'🔄', title:'Обновлён статус задачи', subtitle:`${p.taskId || 'Задача'} — ${status}`};
+      }
+      if (log.method === 'imbot.send') {
+        const msg = (p.MESSAGE || '').replace(/\s+/g, ' ').slice(0, 130);
+        return {icon:'💬', title:'Digital Buddy отправил сообщение в чат', subtitle:msg || 'Сообщение отправлено'};
+      }
+      return {icon:'🔗', title:'REST-вызов Bitrix24', subtitle:log.method};
+    }
+
+    async function loadState(renderChatFlag=true) {
+      if (!userId) return;
+      const st = await api(`/api/demo/state?bitrix_user_id=${userId}`);
+      latestState = st;
+      sessionUser = {...sessionUser, ...st.user};
+      localStorage.setItem('digitalBuddySession', JSON.stringify(sessionUser));
+      applyStaticTranslations();
+      renderAuth();
+      renderState(st);
+      renderTasks(st);
+      renderLogs(st);
+      if (renderChatFlag) renderChat(st.chat_messages || []);
+    }
+
+    function statusLabel(status) {
+      if (status === 'completed') return tr('taskCompleted');
+      if (status === 'in_progress') return tr('taskInProgress');
+      return tr('taskNew');
+    }
+    function dueLabel(dueState) {
+      if (dueState === 'overdue') return tr('taskOverdue');
+      if (dueState === 'soon_due') return tr('taskSoon');
+      return '';
+    }
+    function taskBadges(task) {
+      const status = task.status || 'new';
+      const parts = [`<span class="pill status-${status}">${statusLabel(status)}</span>`];
+      if (task.due_state === 'soon_due' || task.due_state === 'overdue') {
+        parts.push(`<span class="pill due-${task.due_state}">${dueLabel(task.due_state)}</span>`);
+      }
+      return parts.join(' ');
+    }
+    function formatDate(value) {
+      if (!value) return tr('noDeadline');
+      return String(value).replace('T', ' ').slice(0, 16);
+    }
+    function escapeHtml(s) {
+      return String(s ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+    }
+    function getLangLabel(code) {
+      if (code === 'kz') return 'Қазақша';
+      if (code === 'ru') return 'Русский';
+      return tr('chatLangNotSet');
+    }
+    function initials(name) {
+      return String(name || 'Алия Нурланова').split(' ').filter(Boolean).slice(0,2).map(x => x[0]).join('').toUpperCase();
+    }
+    function showToast(text) {
+      const toast = document.getElementById('toast');
+      toast.textContent = text;
+      toast.classList.add('active');
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => toast.classList.remove('active'), 3600);
+    }
+
+    document.getElementById('taskModal').addEventListener('click', e => { if (e.target.id === 'taskModal') closeTaskModal(); });
+    document.getElementById('accountModal').addEventListener('click', e => { if (e.target.id === 'accountModal') closeAccount(); });
+    document.getElementById('onboardingModal').addEventListener('click', e => { if (e.target.id === 'onboardingModal') closeOnboardingModal(); });
+    document.getElementById('chatOverlay').addEventListener('click', e => { if (e.target.id === 'chatOverlay') closeChat(); });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { closeMenu(); closeChat(); closeOnboardingModal(); closeTaskModal(); closeAccount(); }
+      if (e.key === 'Enter' && document.activeElement?.id === 'chatInput') sendChat();
+    });
+
+    boot();
+  </script>
+</body>
+</html>

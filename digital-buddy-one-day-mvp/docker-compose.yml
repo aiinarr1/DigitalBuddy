@@ -1,0 +1,28 @@
+services:
+  digital-buddy-backend:
+    build: ./backend
+    container_name: digital-buddy-one-day-mvp
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      CHROMA_HOST: chromadb
+      CHROMA_PORT: 8000
+      VND_DOCS_DIR: /app/seed_data/vnd_docs
+    depends_on:
+      - chromadb
+    volumes:
+      - digital_buddy_data:/app/data
+
+  chromadb:
+    image: chromadb/chroma:0.5.23
+    container_name: digital-buddy-chromadb
+    ports:
+      - "8001:8000"
+    volumes:
+      - chroma_data:/chroma/chroma
+
+volumes:
+  digital_buddy_data:
+  chroma_data:
